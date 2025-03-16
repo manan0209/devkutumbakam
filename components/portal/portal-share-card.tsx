@@ -77,18 +77,16 @@ export function PortalShareCard({
         useCORS: true,
         allowTaint: true,
         backgroundColor: "#ffffff",
-        onclone: (document, element) => {
-          // Ensure all text is properly rendered
-          const allTextElements = element.querySelectorAll('div, span, p, h1, h2, h3, h4, h5, h6')
+        onclone: (doc, clonedElement) => {
+          // Get all text elements
+          const textElements = clonedElement.querySelectorAll('div, span, p, h1, h2, h3, h4, h5, h6');
           
-          // Process each element with explicit type checking
-          allTextElements.forEach((el) => {
-            // TypeScript needs this explicit check
-            if (el instanceof HTMLElement) {
-              el.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
-              el.style.textRendering = 'geometricPrecision'
-            }
-          })
+          // Apply styles using setAttribute instead of style property
+          textElements.forEach(element => {
+            element.setAttribute('style', 
+              `${element.getAttribute('style') || ''} font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; text-rendering: geometricPrecision;`
+            );
+          });
         }
       })
       
