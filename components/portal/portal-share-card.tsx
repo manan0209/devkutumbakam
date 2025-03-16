@@ -377,7 +377,8 @@ export function PortalShareCard({
         <DialogFooter className="sm:justify-start">
           <DialogDescription>
             Help spread the word and coordinate relief efforts.
-          </DialogFooter>
+          </DialogDescription>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   )
