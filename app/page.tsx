@@ -605,9 +605,9 @@ export default function Home() {
                       </div>
                     </div>
                     <div>
-                      <h4 className="font-semibold">Samir Joshi</h4>
+                      <h4 className="font-semibold">Rishita</h4>
                       <p className="text-sm text-gray-600">
-                        Rishita
+                        Software Engineer
                       </p>
                     </div>
                   </div>
@@ -626,9 +626,9 @@ export default function Home() {
                       </div>
                     </div>
                     <div>
-                      <h4 className="font-semibold">Ankit Patel</h4>
+                      <h4 className="font-semibold">Suhani Patel</h4>
                       <p className="text-sm text-gray-600">
-                        Suhani
+                        Volunteer
                       </p>
                     </div>
                   </div>
