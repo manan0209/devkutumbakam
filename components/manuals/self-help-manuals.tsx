@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { DisasterType, getPortalManuals, getSelfHelpManuals, SelfHelpManual } from "@/lib/db"
 import { handleFirebaseError } from "@/lib/error-handler"
 import { AlertTriangle, Book, BookOpen, Download, Printer, Share2, User } from "lucide-react"
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 // import { jsPDF } from "jspdf"
 
 interface SelfHelpManualsProps {
@@ -18,7 +18,7 @@ interface SelfHelpManualsProps {
 }
 
 // Disaster type icon mapping
-const disasterIcons: Record<string, JSX.Element> = {
+const disasterIcons: Record<string, React.ReactNode> = {
   flood: <AlertTriangle className="h-5 w-5 text-blue-500" />,
   earthquake: <AlertTriangle className="h-5 w-5 text-orange-500" />,
   cyclone: <AlertTriangle className="h-5 w-5 text-purple-500" />,
@@ -49,7 +49,7 @@ export function SelfHelpManuals({ disasterType, portalId, showTitle = true }: Se
         
         if (portalId) {
           // Get manuals linked to this specific portal
-          fetchedManuals = await getPortalManuals(portalId)
+          fetchedManuals = await getPortalManuals(portalId) as SelfHelpManual[]
         } else if (disasterType) {
           // Get manuals for this disaster type
           fetchedManuals = await getSelfHelpManuals(disasterType)
