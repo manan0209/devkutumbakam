@@ -6,30 +6,42 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/lib/auth-context";
-import { DisasterPortal, DisasterType, deletePortal, getPortal, updatePortal } from "@/lib/db";
-import { AlertCircle, AlertTriangle, CheckCircle, Loader2, Trash2 } from "lucide-react";
+import {
+  DisasterPortal,
+  DisasterType,
+  deletePortal,
+  getPortal,
+  updatePortal,
+} from "@/lib/db";
+import {
+  AlertCircle,
+  AlertTriangle,
+  CheckCircle,
+  Loader2,
+  Trash2,
+} from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 // Disaster type to image mapping
 const disasterTypeImages = {
@@ -65,9 +77,9 @@ const commonLocations = [
   "Dehradun, Uttarakhand",
 ];
 
-export default function EditPortalPage({ params }: { params: { id: string } }) {
-  // Use React.use to unwrap the params Promise
-  const unwrappedParams = use(params);
+export default function EditPortalPage({ params }: { params: any }) {
+  // Unwrap the params promise to get the id
+  const unwrappedParams = React.use(params);
   const portalId = unwrappedParams.id;
 
   const [title, setTitle] = useState("");
@@ -94,23 +106,23 @@ export default function EditPortalPage({ params }: { params: { id: string } }) {
       try {
         setInitialLoading(true);
         const portalData = await getPortal(portalId);
-        
+
         if (!portalData) {
           throw new Error("Portal not found");
         }
-        
+
         // Check if user is the creator of the portal
         if (user && portalData.createdBy !== user.uid) {
           setUnauthorized(true);
           return;
         }
-        
+
         setPortal(portalData);
-        
+
         // Set form values
         setTitle(portalData.title || "");
         setDescription(portalData.description || "");
-        
+
         // Handle location
         if (commonLocations.includes(portalData.location)) {
           setLocation(portalData.location);
@@ -118,7 +130,7 @@ export default function EditPortalPage({ params }: { params: { id: string } }) {
           setLocation("custom");
           setCustomLocation(portalData.location);
         }
-        
+
         setUrgency(portalData.urgency || "medium");
         setDisasterType(portalData.disasterType || "other");
       } catch (error) {
@@ -144,7 +156,13 @@ export default function EditPortalPage({ params }: { params: { id: string } }) {
       return;
     }
 
-    if (!title || !description || (!location && !customLocation) || !urgency || !disasterType) {
+    if (
+      !title ||
+      !description ||
+      (!location && !customLocation) ||
+      !urgency ||
+      !disasterType
+    ) {
       setError("Please fill in all required fields");
       return;
     }
@@ -195,14 +213,14 @@ export default function EditPortalPage({ params }: { params: { id: string } }) {
     try {
       await deletePortal(portalId);
       setShowDeleteDialog(false);
-      
+
       // Show success message and redirect
       setSuccess("Portal deleted successfully!");
       setTimeout(() => {
         router.push("/");
       }, 1500);
     } catch (err: unknown) {
-      const errorMessage = 
+      const errorMessage =
         err instanceof Error ? err.message : "Failed to delete portal";
       setError(errorMessage);
       setShowDeleteDialog(false);
@@ -233,9 +251,12 @@ export default function EditPortalPage({ params }: { params: { id: string } }) {
           <div className="container mx-auto px-4">
             <div className="max-w-md mx-auto text-center bg-red-50 p-6 rounded-lg border border-red-200">
               <AlertTriangle className="h-16 w-16 text-red-500 mx-auto mb-4" />
-              <h1 className="text-2xl font-bold text-red-700 mb-2">Unauthorized Access</h1>
+              <h1 className="text-2xl font-bold text-red-700 mb-2">
+                Unauthorized Access
+              </h1>
               <p className="text-gray-600 mb-6">
-                You don't have permission to edit this portal. Only the creator can edit portal details.
+                You don't have permission to edit this portal. Only the creator
+                can edit portal details.
               </p>
               <Button onClick={() => router.push(`/portal/${portalId}`)}>
                 Return to Portal
@@ -255,13 +276,14 @@ export default function EditPortalPage({ params }: { params: { id: string } }) {
           <div className="container mx-auto px-4">
             <div className="max-w-md mx-auto text-center bg-yellow-50 p-6 rounded-lg border border-yellow-200">
               <AlertTriangle className="h-16 w-16 text-yellow-500 mx-auto mb-4" />
-              <h1 className="text-2xl font-bold text-gray-900 mb-2">Portal Not Found</h1>
+              <h1 className="text-2xl font-bold text-gray-900 mb-2">
+                Portal Not Found
+              </h1>
               <p className="text-gray-600 mb-6">
-                The disaster relief portal you're looking for could not be found or may have been removed.
+                The disaster relief portal you're looking for could not be found
+                or may have been removed.
               </p>
-              <Button onClick={() => router.push("/")}>
-                Return to Home
-              </Button>
+              <Button onClick={() => router.push("/")}>Return to Home</Button>
             </div>
           </div>
         </main>
@@ -339,22 +361,34 @@ export default function EditPortalPage({ params }: { params: { id: string } }) {
                         <Label htmlFor="disaster-type">Disaster Type</Label>
                         <Select
                           value={disasterType}
-                          onValueChange={(value) => setDisasterType(value as DisasterType)}
+                          onValueChange={(value) =>
+                            setDisasterType(value as DisasterType)
+                          }
                         >
                           <SelectTrigger>
                             <SelectValue placeholder="Select disaster type" />
                           </SelectTrigger>
                           <SelectContent>
                             <SelectItem value="flood">Flood</SelectItem>
-                            <SelectItem value="earthquake">Earthquake</SelectItem>
-                            <SelectItem value="cyclone">Cyclone/Hurricane</SelectItem>
+                            <SelectItem value="earthquake">
+                              Earthquake
+                            </SelectItem>
+                            <SelectItem value="cyclone">
+                              Cyclone/Hurricane
+                            </SelectItem>
                             <SelectItem value="drought">Drought</SelectItem>
                             <SelectItem value="fire">Fire</SelectItem>
                             <SelectItem value="landslide">Landslide</SelectItem>
                             <SelectItem value="tsunami">Tsunami</SelectItem>
-                            <SelectItem value="chemical">Chemical Incident</SelectItem>
-                            <SelectItem value="biological">Biological Incident</SelectItem>
-                            <SelectItem value="nuclear">Nuclear Incident</SelectItem>
+                            <SelectItem value="chemical">
+                              Chemical Incident
+                            </SelectItem>
+                            <SelectItem value="biological">
+                              Biological Incident
+                            </SelectItem>
+                            <SelectItem value="nuclear">
+                              Nuclear Incident
+                            </SelectItem>
                             <SelectItem value="other">Other</SelectItem>
                           </SelectContent>
                         </Select>
@@ -388,10 +422,7 @@ export default function EditPortalPage({ params }: { params: { id: string } }) {
 
                     <div className="space-y-2">
                       <Label htmlFor="location">Location</Label>
-                      <Select
-                        value={location}
-                        onValueChange={setLocation}
-                      >
+                      <Select value={location} onValueChange={setLocation}>
                         <SelectTrigger>
                           <SelectValue placeholder="Select location" />
                         </SelectTrigger>
@@ -401,7 +432,9 @@ export default function EditPortalPage({ params }: { params: { id: string } }) {
                               {loc}
                             </SelectItem>
                           ))}
-                          <SelectItem value="custom">Custom location</SelectItem>
+                          <SelectItem value="custom">
+                            Custom location
+                          </SelectItem>
                         </SelectContent>
                       </Select>
 
@@ -423,30 +456,49 @@ export default function EditPortalPage({ params }: { params: { id: string } }) {
                       <Label>Current Disaster Type Image</Label>
                       <div className="mt-2 relative h-48 rounded-md overflow-hidden border">
                         <Image
-                          src={portal.image || disasterTypeImages[disasterType as keyof typeof disasterTypeImages] || "/templates/other.jpg"}
+                          src={
+                            portal.image ||
+                            disasterTypeImages[
+                              disasterType as keyof typeof disasterTypeImages
+                            ] ||
+                            "/templates/other.jpg"
+                          }
                           alt={disasterType}
                           fill
                           className="object-cover"
                         />
                       </div>
                       <p className="text-sm text-gray-500 mt-2">
-                        The image will be updated based on the disaster type selected
+                        The image will be updated based on the disaster type
+                        selected
                       </p>
                     </div>
 
                     <div className="flex flex-wrap justify-between space-y-2 sm:space-y-0 pt-4">
-                      <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+                      <Dialog
+                        open={showDeleteDialog}
+                        onOpenChange={setShowDeleteDialog}
+                      >
                         <DialogTrigger asChild>
-                          <Button type="button" variant="destructive" className="gap-2">
+                          <Button
+                            type="button"
+                            variant="destructive"
+                            className="gap-2"
+                          >
                             <Trash2 size={16} />
                             Delete Portal
                           </Button>
                         </DialogTrigger>
                         <DialogContent>
                           <DialogHeader>
-                            <DialogTitle className="text-red-600">Delete Portal</DialogTitle>
+                            <DialogTitle className="text-red-600">
+                              Delete Portal
+                            </DialogTitle>
                             <DialogDescription>
-                              Are you sure you want to delete this portal? This action cannot be undone and will remove all associated resources, volunteers, updates, and forum posts.
+                              Are you sure you want to delete this portal? This
+                              action cannot be undone and will remove all
+                              associated resources, volunteers, updates, and
+                              forum posts.
                             </DialogDescription>
                           </DialogHeader>
                           <div className="bg-red-50 border border-red-200 rounded p-4 text-sm text-red-800 my-4">
@@ -457,16 +509,23 @@ export default function EditPortalPage({ params }: { params: { id: string } }) {
                               <li>All volunteer registrations</li>
                               <li>All status updates and posts</li>
                               <li>All forum discussions</li>
-                              <li>All associated data with this disaster relief effort</li>
+                              <li>
+                                All associated data with this disaster relief
+                                effort
+                              </li>
                             </ul>
                           </div>
                           <DialogFooter>
-                            <Button type="button" variant="outline" onClick={() => setShowDeleteDialog(false)}>
+                            <Button
+                              type="button"
+                              variant="outline"
+                              onClick={() => setShowDeleteDialog(false)}
+                            >
                               Cancel
                             </Button>
-                            <Button 
-                              type="button" 
-                              variant="destructive" 
+                            <Button
+                              type="button"
+                              variant="destructive"
                               onClick={handleDeletePortal}
                               disabled={deleteLoading}
                               className="gap-2"
@@ -516,4 +575,4 @@ export default function EditPortalPage({ params }: { params: { id: string } }) {
       </main>
     </div>
   );
-} 
+}
