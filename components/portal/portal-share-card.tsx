@@ -1,24 +1,24 @@
 "use client"
 
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Separator } from "@/components/ui/separator"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { DisasterPortal } from "@/lib/db"
 import { AlertTriangle, Check, Copy, Download, Facebook, Linkedin, Mail, MapPin, Share2, Twitter } from "lucide-react"
 import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
+import { Badge } from "./ui/badge"
+import { Input } from "./ui/input"
+import { Label } from "./ui/label"
+import { Separator } from "./ui/separator"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs"
 
 interface PortalShareCardProps {
   portal: DisasterPortal
@@ -76,7 +76,15 @@ export function PortalShareCard({
         scale: 2,
         useCORS: true,
         allowTaint: true,
-        backgroundColor: "#ffffff"
+        backgroundColor: "#ffffff",
+        onclone: (document, element) => {
+          // Ensure all text is properly rendered
+          const allTextElements = element.querySelectorAll('div, span, p, h1, h2, h3, h4, h5, h6')
+          allTextElements.forEach(el => {
+            const htmlEl = el as HTMLElement;
+            htmlEl.setAttribute('style', `font-family: system-ui, sans-serif; text-rendering: geometricPrecision;${htmlEl.getAttribute('style') || ''}`)
+          })
+        }
       })
       
       // Create download link
@@ -156,7 +164,7 @@ export function PortalShareCard({
             Share this portal with others to help coordinate relief efforts
           </DialogDescription>
         </DialogHeader>
-        
+
         <Tabs defaultValue="qr" value={shareTab} onValueChange={setShareTab} className="mt-4">
           <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="qr">QR Code</TabsTrigger>
@@ -175,7 +183,7 @@ export function PortalShareCard({
                     height={200} 
                     className="mx-auto"
                   />
-                </div>
+                  </div>
               ) : (
                 <div className="w-[200px] h-[200px] bg-gray-100 animate-pulse rounded-lg"></div>
               )}
@@ -287,7 +295,13 @@ export function PortalShareCard({
               <div 
                 ref={cardRef} 
                 className="border rounded-lg overflow-hidden bg-white"
-                style={{ width: '100%', maxWidth: '400px', margin: '0 auto' }}
+                style={{ 
+                  width: '100%', 
+                  maxWidth: '400px', 
+                  margin: '0 auto',
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                  color: '#000'
+                }}
               >
                 <div className="relative h-48">
                   <Image
@@ -299,7 +313,7 @@ export function PortalShareCard({
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                   
                   <div className="absolute bottom-4 left-4 right-4">
-                    <h3 className="text-xl font-semibold text-white line-clamp-2 mb-1">{portal.title}</h3>
+                    <h3 className="text-xl font-semibold text-white line-clamp-2 mb-1" style={{ textRendering: 'geometricPrecision' }}>{portal.title}</h3>
                     <div className="flex flex-wrap gap-2">
                       <Badge className={getStatusColor(portal.status)}>
                         {portal.status.charAt(0).toUpperCase() + portal.status.slice(1)}
@@ -314,35 +328,37 @@ export function PortalShareCard({
                 </div>
                 
                 <div className="p-4">
-                  <p className="text-gray-600 line-clamp-2 mb-3">{portal.description}</p>
+                  <p className="text-gray-700 line-clamp-2 mb-3" style={{ textRendering: 'geometricPrecision' }}>{portal.description}</p>
                   
-                  <div className="flex flex-wrap items-center text-gray-500 text-sm gap-3">
-                    <div className="flex items-center">
+                  <div className="flex flex-wrap items-center text-gray-700 text-sm gap-3">
+                    <div className="flex items-center" style={{ textRendering: 'geometricPrecision' }}>
                       <MapPin size={14} className="mr-1" />
                       {portal.location}
                     </div>
-                    <div className="flex items-center">
+                    <div className="flex items-center" style={{ textRendering: 'geometricPrecision' }}>
                       <AlertTriangle size={14} className="mr-1" />
                       {formatDate(portal.createdAt)}
                     </div>
                   </div>
                   
                   <div className="mt-4 pt-4 border-t flex items-center justify-between">
-                    <div className="text-sm">
-                      <span className="font-semibold">Scan to help:</span>
+                    <div className="text-sm" style={{ textRendering: 'geometricPrecision' }}>
+                      <span className="font-semibold text-gray-900">Scan to help:</span>
                     </div>
                     {qrCodeUrl && (
-                      <Image 
-                        src={qrCodeUrl} 
-                        alt="QR Code" 
-                        width={60} 
-                        height={60}
-                      />
+                      <div className="bg-white p-1 border border-gray-100 rounded-sm">
+                        <Image 
+                          src={qrCodeUrl} 
+                          alt="QR Code" 
+                          width={60} 
+                          height={60}
+                        />
+                      </div>
                     )}
                   </div>
                 </div>
               </div>
-              
+
               <Button 
                 onClick={downloadCard} 
                 className="w-full"
@@ -356,11 +372,11 @@ export function PortalShareCard({
                 ) : (
                   <>
                     <Download className="mr-2 h-4 w-4" />
-                    Download Card
+              Download Card
                   </>
                 )}
-              </Button>
-            </div>
+            </Button>
+          </div>
           </TabsContent>
         </Tabs>
         
