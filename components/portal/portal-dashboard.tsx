@@ -32,7 +32,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { PortalShareCard } from "./portal-share-card";
+import { PortalShareCard } from "@/components/portal/portal-share-card";
 import { ResolvePortalDialog } from "./resolve-portal-dialog";
 
 interface PortalDashboardProps {

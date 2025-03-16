@@ -7,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { DisasterType, getPortal, getSelfHelpManuals, SelfHelpManual } from "@/lib/db"
 import { handleFirebaseError } from "@/lib/error-handler"
 import { AlertTriangle, Book, BookOpen, Download, Printer, Share2, User } from "lucide-react"
-import { useEffect, useState } from "react"
+import { useEffect, useState, JSX } from "react"
 // import { jsPDF } from "jspdf"
 
 interface SelfHelpManualsProps {

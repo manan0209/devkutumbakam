@@ -1,5 +1,6 @@
 "use client"
 
+import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
@@ -8,19 +9,18 @@ import {
   CardHeader,
   CardTitle
 } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Volunteer } from "@/lib/db"
-import { Timestamp } from "firebase/firestore"
-import { CalendarClock, Mail, MapPin, Phone, User2, Clock, Award, MessageCircle } from "lucide-react"
-import { Badge } from "./ui/badge"
-import { VolunteerShareCard } from "./volunteer-share-card"
-import Link from "next/link"
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { VolunteerShareCard } from "@/components/volunteer/volunteer-share-card"
+import { Volunteer } from "@/lib/db"
+import { Timestamp } from "firebase/firestore"
+import { Award, CalendarClock, Clock, Mail, MessageCircle, Phone, User2 } from "lucide-react"
+import Link from "next/link"
+import { Badge } from "./ui/badge"
 
 interface VolunteerCardProps {
   volunteer: Volunteer

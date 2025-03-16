@@ -3,13 +3,14 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { AlertTriangle, Clock, MapPin, Package, Share2 } from "lucide-react"
 import Link from "next/link"
+import React from "react"
 
 interface ResourceNeedProps {
   resource: {
@@ -29,7 +30,7 @@ interface ResourceNeedProps {
 }
 
 // Category icons mapping
-const categoryIcons: Record<string, JSX.Element> = {
+const categoryIcons: Record<string, React.ReactNode> = {
   medicine: <Package className="h-4 w-4 text-blue-500" />,
   food: <Package className="h-4 w-4 text-green-500" />,
   shelter: <Package className="h-4 w-4 text-orange-500" />,
@@ -116,7 +117,14 @@ export function ResourceNeedCard({ resource, onShare }: ResourceNeedProps) {
             <span>Progress</span>
             <span className="font-medium">{percentFulfilled}% Complete</span>
           </div>
-          <Progress value={percentFulfilled} className="h-2" style={{ background: 'rgb(229,231,235)', '--tw-progress-fill': getProgressColor() }} />
+          <Progress 
+            value={percentFulfilled} 
+            className="h-2" 
+            style={{ 
+              background: 'rgb(229,231,235)', 
+              '--tw-progress-fill': getProgressColor() 
+            } as React.CSSProperties} 
+          />
           <div className="text-sm text-gray-500">
             {resource.fulfilled} of {resource.quantity} {resource.unit || 'units'} fulfilled
           </div>

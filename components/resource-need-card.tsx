@@ -3,13 +3,14 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { AlertTriangle, Clock, MapPin, Package, Share2 } from "lucide-react"
 import Link from "next/link"
+import { JSX } from "react"
 
 interface ResourceNeedProps {
   resource: {
@@ -116,7 +117,14 @@ export function ResourceNeedCard({ resource, onShare }: ResourceNeedProps) {
             <span>Progress</span>
             <span className="font-medium">{percentFulfilled}% Complete</span>
           </div>
-          <Progress value={percentFulfilled} className="h-2" style={{ background: 'rgb(229,231,235)', '--tw-progress-fill': getProgressColor() }} />
+          <Progress 
+            value={percentFulfilled} 
+            className="h-2" 
+            style={{ 
+              background: 'rgb(229,231,235)', 
+              ['--tw-progress-fill' as any]: getProgressColor() 
+            }} 
+          />
           <div className="text-sm text-gray-500">
             {resource.fulfilled} of {resource.quantity} {resource.unit || 'units'} fulfilled
           </div>

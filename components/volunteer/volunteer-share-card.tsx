@@ -58,8 +58,8 @@ export function VolunteerShareCard({
           // Ensure all text is properly rendered
           const allTextElements = element.querySelectorAll('div, span, p, h1, h2, h3, h4, h5, h6')
           allTextElements.forEach(el => {
-            el.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
-            el.style.textRendering = 'geometricPrecision'
+            (el as HTMLElement).style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
+            (el as HTMLElement).style.textRendering = 'geometricPrecision';
           })
         }
       })
