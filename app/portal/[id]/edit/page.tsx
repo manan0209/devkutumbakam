@@ -32,6 +32,7 @@ import {
   getPortal,
   updatePortal,
 } from "@/lib/db";
+import { Timestamp } from "firebase/firestore";
 import {
   AlertCircle,
   AlertTriangle,
@@ -79,7 +80,7 @@ const commonLocations = [
 
 export default function EditPortalPage({ params }: { params: any }) {
   // Unwrap the params promise to get the id
-  const unwrappedParams = React.use(params);
+  const unwrappedParams = React.use(params) as { id: string };
   const portalId = unwrappedParams.id;
 
   const [title, setTitle] = useState("");
@@ -178,7 +179,7 @@ export default function EditPortalPage({ params }: { params: any }) {
         location: finalLocation,
         urgency,
         disasterType,
-        lastUpdated: new Date(),
+        lastUpdated: Timestamp.now(),
       };
 
       await updatePortal(portalId, portalData);

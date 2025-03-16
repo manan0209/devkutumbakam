@@ -9,23 +9,23 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/lib/auth-context";
 import { createPortal, DisasterType } from "@/lib/db";
 import {
-  AlertCircle,
-  AlertTriangle,
-  CheckCircle,
-  MapPin,
-  Newspaper,
-  Plus,
+    AlertCircle,
+    AlertTriangle,
+    CheckCircle,
+    MapPin,
+    Newspaper,
+    Plus,
     Upload
 } from "lucide-react";
 import Image from "next/image";
@@ -191,7 +191,11 @@ export default function CreatePortalPage() {
   const handleTemplateSelect = (template: typeof disasterTemplates[0]) => {
     setTitle(template.title);
     setDescription(template.description);
-    setUrgency(template.urgency);
+    if (template.urgency === "low" || template.urgency === "medium" || template.urgency === "high") {
+      setUrgency(template.urgency);
+    } else {
+      setUrgency("medium");
+    }
     setDisasterType(template.disasterType);
     setNewsClippings([]);
     setImages([]);
