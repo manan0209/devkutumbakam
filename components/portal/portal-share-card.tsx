@@ -80,12 +80,17 @@ export function PortalShareCard({
         onclone: (document, element) => {
           // Ensure all text is properly rendered
           const allTextElements = element.querySelectorAll('div, span, p, h1, h2, h3, h4, h5, h6')
-          allTextElements.forEach(el => {
+          
+          // Helper function to apply styles to HTML elements
+          const applyStyles = (el: Element) => {
             if (el instanceof HTMLElement) {
               el.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
               el.style.textRendering = 'geometricPrecision'
             }
-          })
+          }
+          
+          // Apply styles to each element
+          allTextElements.forEach(applyStyles)
         }
       })
       
