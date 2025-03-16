@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="600" fill="#E3F2FD"/>
+  <g transform="translate(400, 300)">
+    <path d="M-400,50 C-350,20 -300,80 -250,50 C-200,20 -150,80 -100,50 C-50,20 0,80 50,50 C100,20 150,80 200,50 C250,20 300,80 350,50 C400,20 450,80 500,50" 
+          fill="#BBDEFB" stroke="#64B5F6" stroke-width="4"/>
+    <path d="M-400,100 C-350,70 -300,130 -250,100 C-200,70 -150,130 -100,100 C-50,70 0,130 50,100 C100,70 150,130 200,100 C250,70 300,130 350,100 C400,70 450,130 500,100" 
+          fill="#90CAF9" stroke="#42A5F5" stroke-width="4"/>
+    <path d="M-400,150 C-350,120 -300,180 -250,150 C-200,120 -150,180 -100,150 C-50,120 0,180 50,150 C100,120 150,180 200,150 C250,120 300,180 350,150 C400,120 450,180 500,150" 
+          fill="#64B5F6" stroke="#2196F3" stroke-width="4"/>
+    <rect x="-100" y="-200" width="200" height="170" fill="#ECEFF1" stroke="#B0BEC5" stroke-width="2"/>
+    <rect x="-80" y="-180" width="50" height="50" fill="#90CAF9"/>
+    <rect x="30" y="-180" width="50" height="50" fill="#90CAF9"/>
+    <rect x="-80" y="-100" width="160" height="70" fill="#90CAF9"/>
+    <circle cx="0" cy="0" r="80" fill="#E3F2FD"/>
+    <text x="0" y="10" font-family="Arial" font-size="24" text-anchor="middle" fill="#1565C0">Flood</text>
+  </g>
+</svg> 

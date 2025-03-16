@@ -1,0 +1,57 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Basic rules for authenticated users
+    match /{document=**} {
+      allow read, write: if request.auth != null;
+    }
+    
+    // Disaster portal rules
+    match /disasterPortals/{portalId} {
+      allow read: if true;
+      allow create: if request.auth != null;
+      allow update, delete: if request.auth != null && resource.data.createdBy == request.auth.uid;
+    }
+    
+    // Resource needs rules
+    match /resourceNeeds/{resourceId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    
+    // Volunteer rules
+    match /volunteers/{volunteerId} {
+      allow read: if true;
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if request.auth != null && (resource.data.userId == request.auth.uid);
+    }
+    
+    // Updates rules
+    match /updates/{updateId} {
+      allow read: if true;
+      allow create: if request.auth != null;
+      allow update, delete: if request.auth != null && resource.data.createdBy == request.auth.uid;
+    }
+    
+    // Forum posts rules
+    match /forumPosts/{postId} {
+      allow read: if true;
+      allow create: if request.auth != null;
+      allow update, delete: if request.auth != null && resource.data.userId == request.auth.uid;
+    }
+    
+    // Forum comments rules
+    match /forumComments/{commentId} {
+      allow read: if true;
+      allow create: if request.auth != null;
+      allow update, delete: if request.auth != null && resource.data.userId == request.auth.uid;
+    }
+    
+    // Self-help manuals rules
+    match /selfHelpManuals/{manualId} {
+      allow read: if true;
+      allow write: if request.auth != null; // Temporarily allow any authenticated user to write
+    }
+  }
+} 

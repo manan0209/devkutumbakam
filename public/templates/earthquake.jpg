@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="600" fill="#EFEBE9"/>
+  <g transform="translate(400, 300)">
+    <path d="M-350,-50 L-300,-150 L-250,-50 L-200,-200 L-150,-50 L-100,-150 L-50,-50 L0,-250 L50,-50 L100,-150 L150,-50 L200,-200 L250,-50 L300,-150 L350,-50" 
+          fill="none" stroke="#795548" stroke-width="8"/>
+    <rect x="-300" y="0" width="600" height="50" fill="#8D6E63"/>
+    <rect x="-250" y="50" width="500" height="50" fill="#795548"/>
+    <rect x="-350" y="100" width="700" height="100" fill="#6D4C41"/>
+    <circle cx="0" cy="-100" r="80" fill="#EFEBE9"/>
+    <text x="0" y="-90" font-family="Arial" font-size="24" text-anchor="middle" fill="#4E342E">Earthquake</text>
+  </g>
+</svg> 
