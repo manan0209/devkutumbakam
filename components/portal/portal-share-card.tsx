@@ -1,5 +1,6 @@
 "use client"
 
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -10,15 +11,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { DisasterPortal } from "@/lib/db"
-import { AlertTriangle, Check, Copy, Download, Facebook, Linkedin, Mail, MapPin, Share2, Twitter } from "lucide-react"
-import Image from "next/image"
-import { useEffect, useRef, useState } from "react"
-import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { DisasterPortal } from "@/lib/db"
+import { AlertTriangle, Check, Copy, Download, Facebook, Linkedin, Mail, MapPin, Share2, Twitter } from "lucide-react"
+import Image from "next/image"
+import { useEffect, useRef, useState } from "react"
 
 interface PortalShareCardProps {
   portal: DisasterPortal
@@ -82,7 +82,8 @@ export function PortalShareCard({
           const allTextElements = element.querySelectorAll('div, span, p, h1, h2, h3, h4, h5, h6')
           allTextElements.forEach(el => {
             const htmlEl = el as HTMLElement;
-            htmlEl.setAttribute('style', `font-family: system-ui, sans-serif; text-rendering: geometricPrecision;${htmlEl.getAttribute('style') || ''}`)
+            htmlEl.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+            htmlEl.style.textRendering = 'geometricPrecision'
           })
         }
       })
@@ -388,4 +389,4 @@ export function PortalShareCard({
       </DialogContent>
     </Dialog>
   )
-} 
+}
