@@ -229,12 +229,11 @@ export default function Home() {
           <div className="container mx-auto px-4">
             <div className="text-center">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">Kutumbakam Disaster Relief Platform</h2>
-              <p className="text-gray-600 max-w-2xl mx-auto mb-6">
-                A newly launched initiative by Manan Goel to revolutionize disaster relief coordination through technology.
-                This platform is currently under development as part of a B.Tech CSE final year project.
-              </p>
+                <p className="text-gray-600 max-w-2xl mx-auto mb-6">
+                Kutumbakam is a project developed during Hackathon Execute 4.0 to address the problem of delayed disaster aid due to poor coordination. This platform aims to efficiently connect volunteers, resources, and those in need, ensuring timely and effective disaster relief.
+                </p>
               <Badge className="bg-primary text-white hover:bg-love-dark">
-                Project Launch 2024
+                Project Launch 2025
               </Badge>
             </div>
           </div>
@@ -585,9 +584,9 @@ export default function Home() {
                       </div>
                     </div>
                     <div>
-                      <h4 className="font-semibold">Prof. Kapoor</h4>
+                      <h4 className="font-semibold">Prof. Goel</h4>
                       <p className="text-sm text-gray-600">
-                        Project Mentor
+                        Mentor
                       </p>
                     </div>
                   </div>
@@ -608,7 +607,7 @@ export default function Home() {
                     <div>
                       <h4 className="font-semibold">Samir Joshi</h4>
                       <p className="text-sm text-gray-600">
-                        Hackathon Judge
+                        Rishita
                       </p>
                     </div>
                   </div>
@@ -629,7 +628,7 @@ export default function Home() {
                     <div>
                       <h4 className="font-semibold">Ankit Patel</h4>
                       <p className="text-sm text-gray-600">
-                        NGO Coordinator
+                        Suhani
                       </p>
                     </div>
                   </div>
