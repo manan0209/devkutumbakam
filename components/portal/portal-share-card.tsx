@@ -14,11 +14,11 @@ import { DisasterPortal } from "@/lib/db"
 import { AlertTriangle, Check, Copy, Download, Facebook, Linkedin, Mail, MapPin, Share2, Twitter } from "lucide-react"
 import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
-import { Badge } from "./ui/badge"
-import { Input } from "./ui/input"
-import { Label } from "./ui/label"
-import { Separator } from "./ui/separator"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs"
+import { Badge } from "@/components/ui/badge"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Separator } from "@/components/ui/separator"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 interface PortalShareCardProps {
   portal: DisasterPortal

@@ -1,8 +1,6 @@
 "use client";
 
 import { ForumSection } from "@/components/forum-section";
-import { PortalShareCard } from "@/components/portal/portal-share-card";
-import { ResolvePortalDialog } from "@/components/portal/resolve-portal-dialog";
 import { SelfHelpManuals } from "@/components/manuals/self-help-manuals";
 import { SocialShare } from "@/components/social-share";
 import { Badge } from "@/components/ui/badge";
@@ -34,6 +32,8 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { PortalShareCard } from "./portal-share-card";
+import { ResolvePortalDialog } from "./resolve-portal-dialog";
 
 interface PortalDashboardProps {
   portalId: string;
