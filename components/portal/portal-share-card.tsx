@@ -81,10 +81,8 @@ export function PortalShareCard({
           // Ensure all text is properly rendered
           const allTextElements = element.querySelectorAll('div, span, p, h1, h2, h3, h4, h5, h6')
           allTextElements.forEach(el => {
-            // Fix: Cast Element to HTMLElement before accessing style
-            const htmlEl = el as HTMLElement;
-            htmlEl.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
-            htmlEl.style.textRendering = 'geometricPrecision'
+            (el as HTMLElement).style.fontFamily = 'system-ui, sans-serif'
+            (el as HTMLElement).style.textRendering = 'geometricPrecision'
           })
         }
       })
@@ -382,4 +380,4 @@ export function PortalShareCard({
       </DialogContent>
     </Dialog>
   )
-}
+} 
