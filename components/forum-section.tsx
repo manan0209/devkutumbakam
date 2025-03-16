@@ -305,7 +305,7 @@ export function ForumSection({ portalId, portalName }: ForumSectionProps) {
                   />
                 </div>
                 
-                {user?.isAdmin && (
+                {user && (user.email === "admin@kutumbakam.org" || user.email?.endsWith("@admin.kutumbakam.org")) && (
                   <div className="flex items-center space-x-2">
                     <input
                       type="checkbox"
