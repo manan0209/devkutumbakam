@@ -126,6 +126,17 @@ export default function Home() {
                     className="gap-2 border-primary text-primary hover:bg-love-light hover:text-primary"
                     asChild
                   >
+                    <Link href="#active-portals">
+                      <Users size={18} />
+                      Volunteer Now
+                    </Link>
+                  </Button>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="gap-2 border-primary text-primary hover:bg-love-light hover:text-primary"
+                    asChild
+                  >
                     <Link href="/resources">
                       Explore Resources
                       <ArrowRight size={18} />
@@ -175,7 +186,7 @@ export default function Home() {
                 </Card>
               </Link>
 
-              <Link href="/volunteer">
+              <Link href="#active-portals">
                 <Card className="h-full transition-all hover:shadow-md hover:border-primary">
                   <CardContent className="pt-6 flex flex-col items-center text-center">
                     <div className="w-16 h-16 bg-compassion-light rounded-full flex items-center justify-center mb-4">
@@ -192,7 +203,7 @@ export default function Home() {
                       variant="outline"
                       className="mt-auto border-primary text-primary hover:bg-love-light hover:text-primary"
                     >
-                      Register Now
+                      View Active Portals
                     </Button>
                   </CardContent>
                 </Card>
@@ -240,9 +251,12 @@ export default function Home() {
         </section>
 
         {/* Active Disaster Portals Section */}
-        <section className="py-16 bg-gray-50">
+        <section id="active-portals" className="py-16 bg-gray-50">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
+              <Badge className="mb-3 bg-primary text-white hover:bg-love-dark">
+                Disaster Response Hubs
+              </Badge>
               <h2 className="text-3xl font-bold text-gray-900 mb-4">
                 Active Disaster Relief Portals
               </h2>
@@ -263,6 +277,11 @@ export default function Home() {
                   <DisasterPortalCard 
                     key={portal.id}
                     portal={portal}
+                    stats={portalStats[portal.id as string] && {
+                      volunteers: portalStats[portal.id as string].volunteers,
+                      resources: portalStats[portal.id as string].resourceNeeds,
+                      resourcesFulfilled: portalStats[portal.id as string].resourcesFulfilled
+                    }}
                   />
                 ))}
               </div>

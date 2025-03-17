@@ -2,22 +2,17 @@
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Progress } from "@/components/ui/progress"
+import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { DisasterPortal } from "@/lib/db"
 import {
     AlertTriangle,
     ArrowUpRight,
     Clock,
-    ExternalLink,
-    HeartHandshake,
     MapPin,
-    Package,
     Users
 } from "lucide-react"
-import Link from "next/link"
-import { PortalShareCard } from "./portal-share-card"
 import Image from "next/image"
+import Link from "next/link"
 
 interface DisasterPortalCardProps {
   portal: DisasterPortal
@@ -27,17 +22,17 @@ interface DisasterPortalCardProps {
 
 // Disaster type to image mapping
 const disasterTypeImages = {
-  flood: "/templates/flood.jpg",
-  earthquake: "/templates/earthquake.jpg",
-  cyclone: "/templates/cyclone.jpg",
-  drought: "/templates/drought.jpg",
-  fire: "/templates/fire.jpg",
-  landslide: "/templates/landslide.jpg",
-  tsunami: "/templates/tsunami.jpg",
-  chemical: "/templates/chemical.jpg",
-  biological: "/templates/biological.jpg",
-  nuclear: "/templates/nuclear.jpg",
-  other: "/templates/other.jpg",
+  flood: "/flood.jpg",
+  earthquake: "/earthquake.jpg",
+  cyclone: "/cyclone.jpg",
+  drought: "/cactus.jpg",
+  fire: "/wildfire.jpg",
+  landslide: "/earthquake.jpg", // Using earthquake image as fallback for landslide
+  tsunami: "/flood.jpg", // Using flood image as fallback for tsunami
+  chemical: "/flood.jpg", // Using flood image as fallback
+  biological: "/earthquake.jpg", // Using earthquake image as fallback
+  nuclear: "/earthquake.jpg", // Using earthquake image as fallback
+  other: "/earthquake.jpg", // Using earthquake as default
 }
 
 // Function to format date
@@ -61,7 +56,7 @@ const formatDate = (timestamp: any) => {
 }
 
 export function DisasterPortalCard({ portal, showActions = true, className = "" }: DisasterPortalCardProps) {
-  const portalImage = portal.image || disasterTypeImages[portal.disasterType as keyof typeof disasterTypeImages] || "/templates/other.jpg"
+  const portalImage = portal.image || disasterTypeImages[portal.disasterType as keyof typeof disasterTypeImages] || "/earthquake.jpg"
   
   return (
     <Card className={`overflow-hidden transition hover:shadow-md ${className}`}>

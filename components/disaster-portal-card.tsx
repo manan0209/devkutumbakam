@@ -8,7 +8,9 @@ import {
     AlertTriangle,
     ArrowUpRight,
     Clock,
+    Heart,
     MapPin,
+    Package,
     Users
 } from "lucide-react"
 import Image from "next/image"
@@ -19,21 +21,26 @@ interface DisasterPortalCardProps {
   showActions?: boolean
   className?: string
   layout?: "vertical" | "horizontal"
+  stats?: {
+    volunteers?: number;
+    resources?: number;
+    resourcesFulfilled?: number;
+  }
 }
 
-// Disaster type to image mapping
+// Disaster type to image mapping - using images from root public folder
 const disasterTypeImages = {
-  flood: "/templates/flood.jpg",
-  earthquake: "/templates/earthquake.jpg",
-  cyclone: "/templates/cyclone.jpg",
-  drought: "/templates/drought.jpg",
-  fire: "/templates/fire.jpg",
-  landslide: "/templates/landslide.jpg",
-  tsunami: "/templates/tsunami.jpg",
-  chemical: "/templates/chemical.jpg",
-  biological: "/templates/biological.jpg",
-  nuclear: "/templates/nuclear.jpg",
-  other: "/templates/other.jpg",
+  flood: "/flood.jpg",
+  earthquake: "/earthquake.jpg",
+  cyclone: "/cyclone.jpg",
+  drought: "/cactus.jpg",
+  fire: "/wildfire.jpg",
+  landslide: "/earthquake.jpg", // Using earthquake image as fallback for landslide
+  tsunami: "/flood.jpg", // Using flood image as fallback for tsunami
+  chemical: "/flood.jpg", // Using flood image as fallback
+  biological: "/earthquake.jpg", // Using earthquake image as fallback
+  nuclear: "/earthquake.jpg", // Using earthquake image as fallback
+  other: "/earthquake.jpg", // Using earthquake as default
 }
 
 // Function to format date
@@ -60,13 +67,15 @@ export function DisasterPortalCard({
   portal, 
   showActions = true, 
   className = "",
-  layout = "vertical" 
+  layout = "vertical",
+  stats
 }: DisasterPortalCardProps) {
-  const portalImage = portal.image || disasterTypeImages[portal.disasterType as keyof typeof disasterTypeImages] || "/templates/other.jpg"
+  // Use image from portal or select appropriate disaster type image
+  const portalImage = portal.image || disasterTypeImages[portal.disasterType as keyof typeof disasterTypeImages] || "/earthquake.jpg"
   const isHorizontal = layout === "horizontal"
 
   return (
-    <Card className={`overflow-hidden transition hover:shadow-md ${isHorizontal ? 'flex' : ''} ${className}`}>
+    <Card className={`overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group ${isHorizontal ? 'flex' : ''} ${className}`}>
       <div 
         className={`relative ${isHorizontal ? 'w-1/3 min-w-[120px]' : 'h-48'}`} 
         style={isHorizontal ? {aspectRatio: "1/1"} : {}}
@@ -75,12 +84,12 @@ export function DisasterPortalCard({
           src={portalImage}
           alt={portal.title}
           fill
-          className="object-cover"
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
           sizes={isHorizontal ? "(max-width: 768px) 120px, 33vw" : "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"}
           priority={true}
           quality={80}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent group-hover:from-black/80 transition-all duration-300" />
         
         {!isHorizontal && (
           <div className="absolute bottom-4 left-4 right-4">
@@ -168,12 +177,31 @@ export function DisasterPortalCard({
                 </div>
               )}
             </div>
+
+            {stats && (
+              <div className="grid grid-cols-2 gap-2 pt-2 text-xs">
+                {stats.volunteers !== undefined && (
+                  <div className="flex items-center bg-blue-50 text-blue-700 rounded-md px-2 py-1">
+                    <Users size={14} className="mr-1" />
+                    <span>{stats.volunteers} volunteer{stats.volunteers !== 1 ? 's' : ''}</span>
+                  </div>
+                )}
+                {stats.resources !== undefined && (
+                  <div className="flex items-center bg-amber-50 text-amber-700 rounded-md px-2 py-1">
+                    <Package size={14} className="mr-1" />
+                    <span>
+                      {stats.resourcesFulfilled || 0}/{stats.resources} resources
+                    </span>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </CardContent>
         
         {showActions && (
           <CardFooter className={`${isHorizontal ? 'p-3 pt-0' : 'p-4 pt-0'} flex gap-2 mt-auto`}>
-            <Button asChild size={isHorizontal ? "sm" : "default"} className="flex-1">
+            <Button asChild size={isHorizontal ? "sm" : "default"} variant="outline" className="flex-1">
               <Link href={`/portal/${portal.id}`}>
                 <span className="flex items-center justify-center">
                   <span>View Portal</span>
@@ -182,10 +210,10 @@ export function DisasterPortalCard({
               </Link>
             </Button>
             
-            <Button variant="outline" asChild size={isHorizontal ? "sm" : "default"} className="flex-1">
-              <Link href={`/volunteer?portalId=${portal.id}`}>
+            <Button asChild size={isHorizontal ? "sm" : "default"} className="flex-1 bg-love hover:bg-love-dark">
+              <Link href={`/portal/${portal.id}`}>
                 <span className="flex items-center justify-center">
-                  <Users size={isHorizontal ? 14 : 16} className="mr-1" />
+                  <Heart size={isHorizontal ? 14 : 16} className="mr-1" />
                   <span>Volunteer</span>
                 </span>
               </Link>

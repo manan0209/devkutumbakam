@@ -309,7 +309,7 @@ export default function DisasterPreparednessPage() {
                   </Link>
                 </Button>
                 <Button variant="outline" asChild>
-                  <Link href="/volunteer">
+                  <Link href="/#active-portals">
                     Become a Volunteer
                   </Link>
                 </Button>

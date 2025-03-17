@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { VolunteerShareCard } from "@/components/volunteer/volunteer-share-card";
 import { useAuth } from "@/lib/auth-context";
 import { getPortal, registerVolunteer } from "@/lib/db";
 import { Timestamp } from "firebase/firestore";
@@ -101,42 +102,40 @@ export default function VolunteerPage() {
     e.preventDefault();
     setError("");
     setSuccess("");
-    setRegisteredVolunteer(null);
 
-    if (!user) {
-      setError("You must be logged in to register as a volunteer");
-      return;
-    }
-
+    // Validation
     if (!name || !email || !portalId || skills.length === 0 || !availability) {
       setError("Please fill in all required fields");
       return;
     }
 
-    setLoading(true);
+    if (!user) {
+      setError("You need to be logged in to register as a volunteer");
+      router.push(`/login?redirect=/volunteer?portalId=${portalId}`);
+      return;
+    }
 
     try {
-      const volunteerData = {
+      setLoading(true);
+      const volunteer = {
         userId: user.uid,
         portalId,
         name,
         email,
-        phone,
+        phone: phone || "",
         skills,
         availability,
+        registeredAt: new Date(),
       };
 
-      const newVolunteer = await registerVolunteer(volunteerData);
-      setRegisteredVolunteer(newVolunteer as Volunteer);
-      setSuccess("Volunteer registration successful!");
-
-      // Don't redirect immediately so they can see the volunteer card
-    } catch (err: unknown) {
-      // Fixed: properly handle unknown error type
-      const errorMessage =
-        err instanceof Error ? err.message : "Failed to register as volunteer";
-      setError(errorMessage);
-      setRegisteredVolunteer(null);
+      const registeredVolunteer = await registerVolunteer(volunteer);
+      setSuccess(
+        `Thank you for volunteering! You have been registered for ${portalTitle}.`
+      );
+      setRegisteredVolunteer(registeredVolunteer as unknown as Volunteer);
+    } catch (error) {
+      console.error("Error registering volunteer:", error);
+      setError("An error occurred while registering. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -478,111 +477,216 @@ export default function VolunteerPage() {
                 </p>
               </div>
               
-              <Card>
-                <CardContent className="pt-6">
-                  <form className="space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div className="space-y-2">
-                        <label htmlFor="first-name" className="text-sm font-medium text-gray-700">
-                          First Name *
-                        </label>
-                        <Input id="first-name" placeholder="Your first name" required />
-                      </div>
+              {registeredVolunteer ? (
+                <Card className="overflow-hidden">
+                  <CardHeader className="text-center bg-success-light pb-8">
+                    <div className="mx-auto mb-4 bg-success text-white rounded-full p-3 inline-flex">
+                      <Heart className="h-6 w-6" />
+                    </div>
+                    <CardTitle className="text-2xl text-success">Registration Successful!</CardTitle>
+                    <CardDescription>
+                      Thank you for volunteering with {portalTitle}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="px-6 pt-8">
+                    <div className="mb-8">
+                      <p className="text-center mb-6">
+                        Your skills and support will make a real difference in this relief effort. 
+                        You can now access the portal to see how you can help.
+                      </p>
                       
-                      <div className="space-y-2">
-                        <label htmlFor="last-name" className="text-sm font-medium text-gray-700">
-                          Last Name *
-                        </label>
-                        <Input id="last-name" placeholder="Your last name" required />
-                      </div>
+                      {registeredVolunteer && (
+                        <div className="flex flex-col items-center gap-4">
+                          <VolunteerShareCard 
+                            volunteer={registeredVolunteer}
+                            portalName={portalTitle}
+                            className="w-full max-w-md"
+                          />
+                          
+                          <div className="flex gap-4 mt-4">
+                            <Button asChild>
+                              <Link href={`/portal/${portalId}`}>
+                                Go to Portal
+                              </Link>
+                            </Button>
+                          </div>
+                        </div>
+                      )}
                     </div>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div className="space-y-2">
-                        <label htmlFor="email" className="text-sm font-medium text-gray-700">
-                          Email Address *
-                        </label>
-                        <Input id="email" type="email" placeholder="your.email@example.com" required />
-                      </div>
-                      
-                      <div className="space-y-2">
-                        <label htmlFor="phone" className="text-sm font-medium text-gray-700">
-                          Phone Number *
-                        </label>
-                        <Input id="phone" placeholder="+91 1234567890" required />
-                      </div>
+                  </CardContent>
+                </Card>
+              ) : (
+                <>
+                  <div className="flex flex-col lg:flex-row gap-8 mb-8">
+                    <div className="lg:w-2/3">
+                      <h1 className="text-3xl font-bold text-gray-900 mb-4">
+                        Volunteer Registration
+                      </h1>
+                      {portalTitle && (
+                        <p className="text-xl text-gray-600 mb-2">
+                          Join the volunteer team for: <span className="font-medium text-primary">{portalTitle}</span>
+                        </p>
+                      )}
+                      <p className="text-gray-600">
+                        Thank you for stepping forward to help! Fill out the form below to register as a volunteer.
+                      </p>
                     </div>
-                    
-                    <div className="space-y-2">
-                      <label htmlFor="location" className="text-sm font-medium text-gray-700">
-                        Location *
-                      </label>
-                      <div className="flex items-center space-x-2">
-                        <MapPin className="h-5 w-5 text-gray-400" />
-                        <Input id="location" placeholder="City, State, Country" required />
-                      </div>
+
+                    <div className="lg:w-1/3 bg-love-light rounded-lg p-4">
+                      <h3 className="font-medium text-gray-900 mb-2 flex items-center">
+                        <Heart className="h-5 w-5 mr-2 text-love" />
+                        Why Volunteer?
+                      </h3>
+                      <ul className="space-y-2 text-sm">
+                        <li className="flex items-start">
+                          <Shield className="h-4 w-4 mr-2 text-gray-700 mt-0.5" />
+                          <span>Make a direct impact on affected communities</span>
+                        </li>
+                        <li className="flex items-start">
+                          <Users className="h-4 w-4 mr-2 text-gray-700 mt-0.5" />
+                          <span>Join a network of compassionate individuals</span>
+                        </li>
+                        <li className="flex items-start">
+                          <Clock className="h-4 w-4 mr-2 text-gray-700 mt-0.5" />
+                          <span>Flexible volunteering based on your availability</span>
+                        </li>
+                        <li className="flex items-start">
+                          <Award className="h-4 w-4 mr-2 text-gray-700 mt-0.5" />
+                          <span>Gain valuable experience in disaster response</span>
+                        </li>
+                        <li className="flex items-start">
+                          <Coffee className="h-4 w-4 mr-2 text-gray-700 mt-0.5" />
+                          <span>Connect with like-minded volunteers</span>
+                        </li>
+                      </ul>
                     </div>
-                    
-                    <div className="space-y-2">
-                      <label htmlFor="volunteer-program" className="text-sm font-medium text-gray-700">
-                        Preferred Volunteer Program *
-                      </label>
-                      <select 
-                        id="volunteer-program" 
-                        className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background"
-                        required
-                      >
-                        <option value="" disabled selected>Select a program</option>
-                        <option value="emergency-response">Emergency Response Team</option>
-                        <option value="technical-support">Technical Support Team</option>
-                        <option value="community-outreach">Community Outreach</option>
-                        <option value="multiple">Interested in Multiple Programs</option>
-                      </select>
+                  </div>
+
+                  {error && (
+                    <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded mb-6">
+                      {error}
                     </div>
-                    
-                    <div className="space-y-2">
-                      <label htmlFor="skills" className="text-sm font-medium text-gray-700">
-                        Relevant Skills and Experience
-                      </label>
-                      <Textarea 
-                        id="skills" 
-                        placeholder="Please describe any relevant skills, certifications, or experience you have that could be valuable."
-                        rows={4}
-                      />
+                  )}
+
+                  {success && !registeredVolunteer && (
+                    <div className="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded mb-6">
+                      {success}
                     </div>
-                    
-                    <div className="space-y-2">
-                      <label htmlFor="motivation" className="text-sm font-medium text-gray-700">
-                        Motivation to Volunteer *
-                      </label>
-                      <Textarea 
-                        id="motivation" 
-                        placeholder="Why do you want to volunteer with Kutumbakam? What motivates you to help in disaster relief?"
-                        rows={4}
-                        required
-                      />
-                    </div>
-                    
-                    <div className="flex items-center space-x-2">
-                      <input 
-                        type="checkbox" 
-                        id="terms" 
-                        className="h-4 w-4 rounded border-gray-300 text-indiaGreen focus:ring-indiaGreen"
-                        required
-                      />
-                      <label htmlFor="terms" className="text-sm text-gray-600">
-                        I agree to the volunteer terms and conditions and consent to being contacted about volunteer opportunities.
-                      </label>
-                    </div>
-                    
-                    <div>
-                      <Button type="submit" size="lg" className="w-full">
-                        Submit Application
-                      </Button>
-                    </div>
-                  </form>
-                </CardContent>
-              </Card>
+                  )}
+
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Registration Form</CardTitle>
+                      <CardDescription>
+                        Please provide your details to register as a volunteer
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <form className="space-y-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div className="space-y-2">
+                            <label htmlFor="first-name" className="text-sm font-medium text-gray-700">
+                              First Name *
+                            </label>
+                            <Input id="first-name" placeholder="Your first name" required />
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <label htmlFor="last-name" className="text-sm font-medium text-gray-700">
+                              Last Name *
+                            </label>
+                            <Input id="last-name" placeholder="Your last name" required />
+                          </div>
+                        </div>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div className="space-y-2">
+                            <label htmlFor="email" className="text-sm font-medium text-gray-700">
+                              Email Address *
+                            </label>
+                            <Input id="email" type="email" placeholder="your.email@example.com" required />
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <label htmlFor="phone" className="text-sm font-medium text-gray-700">
+                              Phone Number *
+                            </label>
+                            <Input id="phone" placeholder="+91 1234567890" required />
+                          </div>
+                        </div>
+                        
+                        <div className="space-y-2">
+                          <label htmlFor="location" className="text-sm font-medium text-gray-700">
+                            Location *
+                          </label>
+                          <div className="flex items-center space-x-2">
+                            <MapPin className="h-5 w-5 text-gray-400" />
+                            <Input id="location" placeholder="City, State, Country" required />
+                          </div>
+                        </div>
+                        
+                        <div className="space-y-2">
+                          <label htmlFor="volunteer-program" className="text-sm font-medium text-gray-700">
+                            Preferred Volunteer Program *
+                          </label>
+                          <select 
+                            id="volunteer-program" 
+                            className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background"
+                            required
+                          >
+                            <option value="" disabled selected>Select a program</option>
+                            <option value="emergency-response">Emergency Response Team</option>
+                            <option value="technical-support">Technical Support Team</option>
+                            <option value="community-outreach">Community Outreach</option>
+                            <option value="multiple">Interested in Multiple Programs</option>
+                          </select>
+                        </div>
+                        
+                        <div className="space-y-2">
+                          <label htmlFor="skills" className="text-sm font-medium text-gray-700">
+                            Relevant Skills and Experience
+                          </label>
+                          <Textarea 
+                            id="skills" 
+                            placeholder="Please describe any relevant skills, certifications, or experience you have that could be valuable."
+                            rows={4}
+                          />
+                        </div>
+                        
+                        <div className="space-y-2">
+                          <label htmlFor="motivation" className="text-sm font-medium text-gray-700">
+                            Motivation to Volunteer *
+                          </label>
+                          <Textarea 
+                            id="motivation" 
+                            placeholder="Why do you want to volunteer with Kutumbakam? What motivates you to help in disaster relief?"
+                            rows={4}
+                            required
+                          />
+                        </div>
+                        
+                        <div className="flex items-center space-x-2">
+                          <input 
+                            type="checkbox" 
+                            id="terms" 
+                            className="h-4 w-4 rounded border-gray-300 text-indiaGreen focus:ring-indiaGreen"
+                            required
+                          />
+                          <label htmlFor="terms" className="text-sm text-gray-600">
+                            I agree to the volunteer terms and conditions and consent to being contacted about volunteer opportunities.
+                          </label>
+                        </div>
+                        
+                        <div>
+                          <Button type="submit" size="lg" className="w-full">
+                            Submit Application
+                          </Button>
+                        </div>
+                      </form>
+                    </CardContent>
+                  </Card>
+                </>
+              )}
             </div>
           </div>
         </section>

@@ -8,19 +8,19 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/lib/auth-context";
 import {
-  DisasterPortal,
-  getUserPortals,
-  getUserVolunteerActivities,
-  Volunteer,
+    DisasterPortal,
+    getUserPortals,
+    getUserVolunteerActivities,
+    Volunteer,
 } from "@/lib/db";
 import {
-  AlertTriangle,
-  Calendar,
-  Clock,
-  Eye,
-  Package,
-  Plus,
-  User,
+    AlertTriangle,
+    Calendar,
+    Clock,
+    Eye,
+    Package,
+    Plus,
+    User,
 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -366,7 +366,7 @@ export default function DashboardPage() {
                     You haven't volunteered for any relief efforts yet.
                   </p>
                   <Button className="gap-2" variant="outline" asChild>
-                    <Link href="/volunteer">
+                    <Link href="/#active-portals">
                       <Plus size={16} />
                       Find Volunteer Opportunities
                     </Link>

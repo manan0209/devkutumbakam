@@ -6,39 +6,39 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/lib/auth-context";
 import {
-  DisasterPortal,
-  DisasterType,
-  deletePortal,
-  getPortal,
-  updatePortal,
+    DisasterPortal,
+    DisasterType,
+    deletePortal,
+    getPortal,
+    updatePortal,
 } from "@/lib/db";
 import { Timestamp } from "firebase/firestore";
 import {
-  AlertCircle,
-  AlertTriangle,
-  CheckCircle,
-  Loader2,
-  Trash2,
+    AlertCircle,
+    AlertTriangle,
+    CheckCircle,
+    Loader2,
+    Trash2,
 } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -46,17 +46,17 @@ import React, { useEffect, useState } from "react";
 
 // Disaster type to image mapping
 const disasterTypeImages = {
-  flood: "/templates/flood.jpg",
-  earthquake: "/templates/earthquake.jpg",
-  cyclone: "/templates/cyclone.jpg",
-  drought: "/templates/drought.jpg",
-  fire: "/templates/fire.jpg",
-  landslide: "/templates/landslide.jpg",
-  tsunami: "/templates/tsunami.jpg",
-  chemical: "/templates/chemical.jpg",
-  biological: "/templates/biological.jpg",
-  nuclear: "/templates/nuclear.jpg",
-  other: "/templates/other.jpg",
+  flood: "/flood.jpg",
+  earthquake: "/earthquake.jpg",
+  cyclone: "/cyclone.jpg",
+  drought: "/cactus.jpg",
+  fire: "/wildfire.jpg",
+  landslide: "/earthquake.jpg",
+  tsunami: "/flood.jpg",
+  chemical: "/img (3).png",
+  biological: "/img (2).png",
+  nuclear: "/img (4).png",
+  other: "/img (1).png",
 };
 
 // Common Indian locations for disasters
@@ -457,13 +457,7 @@ export default function EditPortalPage({ params }: { params: any }) {
                       <Label>Current Disaster Type Image</Label>
                       <div className="mt-2 relative h-48 rounded-md overflow-hidden border">
                         <Image
-                          src={
-                            portal.image ||
-                            disasterTypeImages[
-                              disasterType as keyof typeof disasterTypeImages
-                            ] ||
-                            "/templates/other.jpg"
-                          }
+                          src={portal?.image || "/earthquake.jpg"}
                           alt={disasterType}
                           fill
                           className="object-cover"

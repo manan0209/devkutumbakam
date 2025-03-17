@@ -42,7 +42,7 @@ const disasterTemplates = [
     location: "",
     urgency: "high",
     disasterType: "flood" as DisasterType,
-    image: "/templates/flood.jpg",
+    image: "/flood.jpg",
   },
   {
     id: "earthquake",
@@ -52,7 +52,7 @@ const disasterTemplates = [
     location: "",
     urgency: "high",
     disasterType: "earthquake" as DisasterType,
-    image: "/templates/earthquake.jpg",
+    image: "/earthquake.jpg",
   },
   {
     id: "cyclone",
@@ -62,7 +62,7 @@ const disasterTemplates = [
     location: "",
     urgency: "high",
     disasterType: "cyclone" as DisasterType,
-    image: "/templates/cyclone.jpg",
+    image: "/cyclone.jpg",
   },
   {
     id: "drought",
@@ -72,7 +72,7 @@ const disasterTemplates = [
     location: "",
     urgency: "medium",
     disasterType: "drought" as DisasterType,
-    image: "/templates/drought.jpg",
+    image: "/cactus.jpg",
   },
   {
     id: "fire",
@@ -82,7 +82,7 @@ const disasterTemplates = [
     location: "",
     urgency: "high",
     disasterType: "fire" as DisasterType,
-    image: "/templates/fire.jpg",
+    image: "/wildfire.jpg",
   },
 ];
 
@@ -240,6 +240,24 @@ export default function CreatePortalPage() {
           (t) => t.id === selectedTemplate
         );
         imageUrl = template?.image;
+      } 
+      
+      // Fallback to disaster type image if no other image is provided
+      if (!imageUrl) {
+        const disasterTypeImages = {
+          flood: "/flood.jpg",
+          earthquake: "/earthquake.jpg",
+          cyclone: "/cyclone.jpg",
+          drought: "/cactus.jpg",
+          fire: "/wildfire.jpg",
+          landslide: "/earthquake.jpg", // Using earthquake image as fallback for landslide
+          tsunami: "/flood.jpg", // Using flood image as fallback for tsunami
+          chemical: "/flood.jpg", // Using flood image as fallback
+          biological: "/earthquake.jpg", // Using earthquake image as fallback
+          nuclear: "/earthquake.jpg", // Using earthquake image as fallback
+          other: "/earthquake.jpg", // Using earthquake as default
+        };
+        imageUrl = disasterTypeImages[disasterType as keyof typeof disasterTypeImages] || "/earthquake.jpg";
       }
 
       const portalData = {
