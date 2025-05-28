@@ -7,7 +7,7 @@ A modern, open-source disaster relief coordination portal that empowers anyone t
 [![Live Demo](https://img.shields.io/badge/Live-Demo-green?style=flat-square&logo=vercel)](https://devkutumbakam.vercel.app/)
 
 ## Snapshots
-<img src="public/ss3.png" alt="Project Screenshot" width="500" />   <img src="public/ss4.png" alt="Project Screenshot" width="500" />   <img src="public/ss2.png" alt="Project Screenshot" width="500" />   <img src="public/ss1.png" alt="Project Screenshot" width="500" />
+<img src="public/ss3.png" alt="Project Screenshot" width="400" />   <img src="public/ss4.png" alt="Project Screenshot" width="400" />   <img src="public/ss2.png" alt="Project Screenshot" width="400" />   <img src="public/ss1.png" alt="Project Screenshot" width="400" />
 
 ---
 
